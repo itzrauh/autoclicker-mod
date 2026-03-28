@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "xyz.itzrauh.autoclicker.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"MouseMixin",
+		"MinecraftClientInvoker"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

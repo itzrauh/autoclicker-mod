@@ -1,0 +1,31 @@
+{
+  "key.autoclicker.toggle": "Toggle AutoClicker",
+  "key.autoclicker.next_profile": "Next Profile",
+  "key.autoclicker.previous_profile": "Previous Profile",
+  "key.autoclicker.open_config": "Open Config",
+  "key.category.autoclicker.keybinds": "AutoClicker",
+  "autoclicker.hud.delay": "%sms",
+  "autoclicker.hud.button.left": "Left",
+  "autoclicker.hud.button.right": "Right",
+  "autoclicker.hud.double": "x2",
+  "autoclicker.message.toggle.on": "ENABLED",
+  "autoclicker.message.toggle.off": "DISABLED",
+  "autoclicker.actionbar.profile": "Profile: ",
+  "autoclicker.screen.title": "Manage Profiles",
+  "autoclicker.screen.profile_counter": "Profile %s/%s",
+  "autoclicker.screen.field.name": "Name:",
+  "autoclicker.screen.field.delay": "Delay (ms):",
+  "autoclicker.screen.field.button": "Button:",
+  "autoclicker.screen.field.doubleclick": "Double click:",
+  "autoclicker.screen.btn.left": "Left",
+  "autoclicker.screen.btn.right": "Right",
+  "autoclicker.screen.btn.doubleclick.on": "Double click: ON",
+  "autoclicker.screen.btn.doubleclick.off": "Double click: OFF",
+  "autoclicker.screen.btn.duplicate": "Duplicate",
+  "autoclicker.screen.btn.delete": "Delete",
+  "autoclicker.screen.btn.close": "Close",
+  "autoclicker.screen.btn.new": "+",
+  "autoclicker.profile.default_name": "New profile"
+}
+
+
