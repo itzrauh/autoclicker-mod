@@ -8,3 +8,18 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+
+rootProject.name = "autoclicker-mod"
+
+include ":common"
+include ":versions:1.21.9"
+include ":versions:1.21.8"
+include ":versions:1.21.7"
+include ":versions:1.21.6"
+include ":versions:1.21.5"
+include ":versions:1.21.4"
+include ":versions:1.21.3"
+include ":versions:1.21.2"
+include ":versions:1.21.1"
+include ":versions:1.20.4"
+include ":versions:1.20.1"

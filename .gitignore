@@ -38,3 +38,62 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+
+# versioning
+versions/.gradle/
+
+# 1.20.1
+versions/1.20.1/.gradle/
+versions/1.20.1/run/
+versions/1.20.1/build/
+
+# 1.20.4
+versions/1.20.4/.gradle/
+versions/1.20.4/run/
+versions/1.20.4/build/
+
+# 1.21.1
+versions/1.21.1/.gradle/
+versions/1.21.1/run/
+versions/1.21.1/build/
+
+# 1.21.2
+versions/1.21.2/.gradle/
+versions/1.21.2/run/
+versions/1.21.2/build/
+
+# 1.21.3
+versions/1.21.3/.gradle/
+versions/1.21.3/run/
+versions/1.21.3/build/
+
+# 1.21.4
+versions/1.21.4/.gradle/
+versions/1.21.4/run/
+versions/1.21.4/build/
+
+# 1.21.5
+versions/1.21.5/.gradle/
+versions/1.21.5/run/
+versions/1.21.5/build/
+
+# 1.21.6
+versions/1.21.6/.gradle/
+versions/1.21.6/run/
+versions/1.21.6/build/
+
+# 1.21.7
+versions/1.21.7/.gradle/
+versions/1.21.7/run/
+versions/1.21.7/build/
+
+# 1.21.8
+versions/1.21.8/.gradle/
+versions/1.21.8/run/
+versions/1.21.8/build/
+
+# 1.21.9
+versions/1.21.9/.gradle/
+versions/1.21.9/run/
+versions/1.21.9/build/

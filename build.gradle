@@ -1,72 +1,127 @@
 plugins {
-	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" apply false
 	id 'maven-publish'
 }
 
-version = project.mod_version
-group = project.maven_group
+configure(subprojects.findAll { it.name != "versions" }) {
+	apply plugin: 'net.fabricmc.fabric-loom-remap'
+	apply plugin: 'maven-publish'
 
-base {
-	archivesName = project.archives_base_name
-}
+	version = "${project.mod_version}+${project.minecraft_version}"
+	group = project.maven_group
 
-repositories {
-	maven {
-		name = "Terraformers"
-		url = "https://maven.terraformersmc.com/"
-	}
-	maven { url "https://maven.shedaniel.me/" }
-	maven { url "https://maven.terraformersmc.com/releases/" }
-
-	mavenCentral()
-}
-
-dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
-	// Cloth Config
-	modApi("me.shedaniel.cloth:cloth-config-fabric:20.0.149") {
-		exclude(group: "net.fabricmc.fabric-api")
+	base {
+		archivesName = "${project.archives_base_name}-${project.minecraft_version}"
 	}
 
-	// Mod Menu
-	modApi "com.terraformersmc:modmenu:17.0.0"
+	repositories {
+		maven { name = "Terraformers"; url = "https://maven.terraformersmc.com/" }
+		maven { url "https://maven.shedaniel.me/" }
+		mavenCentral()
+	}
 
-	// Lombok
-	compileOnly("org.projectlombok:lombok:1.18.44")
-	annotationProcessor("org.projectlombok:lombok:1.18.44")
+	dependencies {
+		minecraft "com.mojang:minecraft:${project.minecraft_version}"
+		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+		modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	testCompileOnly("org.projectlombok:lombok:1.18.44")
-	testAnnotationProcessor("org.projectlombok:lombok:1.18.44")
-	
-}
+		modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+			exclude(group: "net.fabricmc.fabric-api")
+		}
 
-processResources {
-	inputs.property "version", project.version
+		modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
+		compileOnly("org.projectlombok:lombok:1.18.44")
+		annotationProcessor("org.projectlombok:lombok:1.18.44")
+		testCompileOnly("org.projectlombok:lombok:1.18.44")
+		testAnnotationProcessor("org.projectlombok:lombok:1.18.44")
+	}
+
+	processResources {
+		inputs.property "version", project.version
+		inputs.property "minecraft_version", project.minecraft_version
+		inputs.property "loader_version", project.loader_version
+
+		filesMatching("fabric.mod.json") {
+			expand(
+					"version": project.version,
+					"minecraft_version": project.minecraft_version,
+					"loader_version": project.loader_version
+			)
+		}
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		it.options.release = 21
+	}
+
+	java {
+		withSourcesJar()
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
+	}
+
+	jar {
+		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		inputs.property "archivesName", project.base.archivesName
+		from(rootDir.toPath().resolve("LICENSE").toFile()) {
+			rename { "${it}_${inputs.properties.archivesName}" }
+		}
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
+configure(subprojects.findAll { it.name != "versions" && it.name != "common" }) {
+	dependencies {
+		compileOnly project(':common')
+	}
 
-java {
-	withSourcesJar()
+	sourceSets {
+		main {
+			java {
+				srcDirs = [ projectDir.toPath().resolve("src/main/java").toFile() ]
+			}
+			resources {
+				srcDirs = [
+						rootProject.project(':common').projectDir.toPath().resolve("src/main/resources").toFile(),
+						projectDir.toPath().resolve("src/main/resources").toFile()
+				]
+			}
+		}
+	}
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
+	afterEvaluate {
+		def commonSrc = rootProject.project(':common').projectDir.toPath().resolve("src/main/java")
+		def versionSrc = projectDir.toPath().resolve("src/main/java")
 
-jar {
-	inputs.property "archivesName", project.base.archivesName
+		def overrides = []
+		if (versionSrc.toFile().exists()) {
+			versionSrc.toFile().eachFileRecurse(groovy.io.FileType.FILES) { f ->
+				if (f.name.endsWith(".java")) {
+					overrides << versionSrc.relativize(f.toPath()).toString()
+				}
+			}
+		}
 
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
+		tasks.named("compileJava") {
+			source(rootProject.fileTree(commonSrc.toFile()) { exclude overrides })
+		}
+	}
+
+	jar {
+		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		from sourceSets.main.output
+		inputs.property "archivesName", project.base.archivesName
+		from(rootDir.toPath().resolve("LICENSE").toFile()) {
+			rename { "${it}_${inputs.properties.archivesName}" }
+		}
+	}
+	loom {
+		runs {
+			client {
+				ideConfigGenerated true
+				runDir "run"
+			}
+		}
 	}
 }
