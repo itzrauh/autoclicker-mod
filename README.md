@@ -1,4 +1,6 @@
-# Autoclicker Mod
+<p align="center">
+  <img src="assets/banner.png" width="600"/>
+</p>
 
 > A Fabric Minecraft mod with multi-profile support, configurable click settings, and full traductions (🇬🇧 English · 🇪🇸 Español · 🇫🇷 Français)
 
