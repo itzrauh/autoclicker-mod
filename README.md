@@ -41,7 +41,7 @@ All keybinds can be rebound in **Options → Controls → AutoClicker**.
 
 ---
 
-## 🗂Profile System
+## Profile System
 
 Each profile stores:
 - **Name** — up to 24 characters
