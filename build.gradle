@@ -11,7 +11,7 @@ configure(subprojects.findAll { it.name != "versions" }) {
 	group = project.maven_group
 
 	base {
-		archivesName = "${project.archives_base_name}-${project.minecraft_version}"
+		archivesName = project.archives_base_name
 	}
 
 	repositories {
@@ -62,8 +62,10 @@ configure(subprojects.findAll { it.name != "versions" }) {
 		targetCompatibility = JavaVersion.VERSION_21
 	}
 
-	jar {
+	tasks.named("jar") {
 		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		archiveVersion = "${project.mod_version}+${project.minecraft_version}"
+		archiveClassifier = ""
 		inputs.property "archivesName", project.base.archivesName
 		from(rootDir.toPath().resolve("LICENSE").toFile()) {
 			rename { "${it}_${inputs.properties.archivesName}" }
@@ -108,14 +110,10 @@ configure(subprojects.findAll { it.name != "versions" && it.name != "common" }) 
 		}
 	}
 
-	jar {
-		duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	tasks.named("jar") {
 		from sourceSets.main.output
-		inputs.property "archivesName", project.base.archivesName
-		from(rootDir.toPath().resolve("LICENSE").toFile()) {
-			rename { "${it}_${inputs.properties.archivesName}" }
-		}
 	}
+
 	loom {
 		runs {
 			client {

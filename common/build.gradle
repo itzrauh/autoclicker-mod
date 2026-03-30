@@ -7,7 +7,7 @@ version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 base {
-    archivesName = "${project.archives_base_name}-${project.minecraft_version}"
+    archivesName = project.archives_base_name
 }
 
 repositories {
@@ -59,6 +59,7 @@ java {
 }
 
 jar {
+    archiveClassifier = ""
     inputs.property "archivesName", project.base.archivesName
     from(rootDir.toPath().resolve("LICENSE").toFile()) {
         rename { "${it}_${inputs.properties.archivesName}" }

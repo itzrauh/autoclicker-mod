@@ -33,7 +33,7 @@ jobs:
       - name: Collect jars
         run: |
           mkdir -p release-jars
-          cp versions/1.21.10/build/libs/*[0-9].jar release-jars/ 2>/dev/null || true
+          cp common/build/libs/*[0-9].jar release-jars/ 2>/dev/null || true
           cp versions/1.21.9/build/libs/*[0-9].jar release-jars/ 2>/dev/null || true
           cp versions/1.21.8/build/libs/*[0-9].jar release-jars/ 2>/dev/null || true
           cp versions/1.21.7/build/libs/*[0-9].jar release-jars/ 2>/dev/null || true
